@@ -2,6 +2,8 @@
 	<img width=256px src="GitHub/logo.png" />
 </p>
 
+Introducing Spice of Life: Potato Edition! A new mod designed to reward the player for food diversity, like the carrot edition, but also requires a constant supply of diverse food rather than a single consumption, to encourage automation.
+
 A mod designed to encourage dietary variety! It does so by **rewarding** the player for eating a variety of foods instead of **punishing** them for failing to diversify. Instead of using the stick we use the carrot!
 
 This mod is not a fork of Spice of Life, although it is named similarly as it is a similar concept, but reversed in terms of the effects!
