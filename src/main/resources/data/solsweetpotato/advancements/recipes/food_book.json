@@ -10,7 +10,7 @@
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
-					{ "item": "minecraft:potato" }
+					{ "items": ["minecraft:potato"] }
 				]
 			}
 		},
@@ -18,7 +18,7 @@
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
-					{ "item": "minecraft:book" }
+					{ "items": ["minecraft:book"] }
 				]
 			}
 		},
