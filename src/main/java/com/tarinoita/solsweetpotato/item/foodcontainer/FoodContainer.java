@@ -72,11 +72,11 @@ public class FoodContainer extends AbstractContainerMenu {
         int rowsRequired = (int) Math.ceil((double) nslots / (double) slotsPerRow);
         int playerSlotTopRow;
         if (rowsRequired >= 10) {
-            playerSlotTopRow = 300;
+            playerSlotTopRow = 299;
         } else if (rowsRequired >= 7) {
-            playerSlotTopRow = 225;
+            playerSlotTopRow = 219;
         } else if (rowsRequired >= 4) {
-            playerSlotTopRow = 150;
+            playerSlotTopRow = 148;
         } else {
             playerSlotTopRow = 84;
         }
