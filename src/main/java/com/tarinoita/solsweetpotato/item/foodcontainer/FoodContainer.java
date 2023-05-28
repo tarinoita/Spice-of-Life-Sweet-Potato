@@ -16,7 +16,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 public class FoodContainer extends AbstractContainerMenu {
     public static final int PLAYERSIZE = 4 * 9;
     public static final int GUI_SLOT_SIZE_PX = 18;
-    public static final int GUI_VERTICAL_BUFFER_PX = 17;
+    public static final int GUI_VERTICAL_BUFFER_PX = 12;
     public static final int MAX_SLOTS_PER_ROW = 9;
 
     public ItemStack containerItem;
