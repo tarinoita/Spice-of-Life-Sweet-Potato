@@ -54,11 +54,11 @@ public class FoodContainerScreen extends AbstractContainerScreen<FoodContainer> 
             if (h.getSlots() > MAX_SLOTS_PER_ROW) {
                 yStart = GUI_VERTICAL_BUFFER_PX + (84-36-23)/rowsRequired;
             }
-            for (int j = 0; j < h.getSlots(); j++) {
-                int row = j / slotsPerRow;
-                int col = j % slotsPerRow;
-                int xPos = xStart + col * GUI_SLOT_SIZE_PX;
-                int yPos = yStart + row * GUI_SLOT_SIZE_PX;
+            for (int i = 0; i < h.getSlots(); i++) {
+                int row = i / slotsPerRow;
+                int col = i % slotsPerRow;
+                int xPos = xStart - 1 + col * GUI_SLOT_SIZE_PX;
+                int yPos = yStart - 1 + row * GUI_SLOT_SIZE_PX;
 
                 this.drawSlot(matrices, xPos, yPos);
           }
