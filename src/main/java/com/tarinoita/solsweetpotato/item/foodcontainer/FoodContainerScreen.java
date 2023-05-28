@@ -31,6 +31,14 @@ public class FoodContainerScreen extends AbstractContainerScreen<FoodContainer> 
     }
 
     @Override
+    protected void init() {
+        // Largest lunchbox png dimensions
+        super.init(minecraft, 176, 382);
+        this.leftPos = (this.width - this.imageWidth) / 2;
+        this.topPos = (this.height - this.imageHeight) / 2;
+    }
+
+    @Override
     protected void renderBg(PoseStack matrices, float partialTicks, int x, int y) {
         this.menu.containerItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
             int slotsPerRow = h.getSlots();
