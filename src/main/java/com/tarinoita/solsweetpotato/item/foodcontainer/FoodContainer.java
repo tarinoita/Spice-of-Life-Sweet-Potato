@@ -45,12 +45,13 @@ public class FoodContainer extends AbstractContainerMenu {
             nslots = h.getSlots();
             int slotsPerRow = h.getSlots();
             if (h.getSlots() > 9) {
-                slotsPerRow = h.getSlots() / 2;
+                slotsPerRow = 9;
             }
-            int xStart = (2*8 + 9*18 - slotsPerRow * 18) / 2;
+            int rowsRequired = 1 + h.getSlots() / slotsPerRow;
+            int xStart = (2*8 + 9*18 - slotsPerRow * 18) / rowsRequired;
             int yStart = 17 + 18;
             if (h.getSlots() > 9) {
-                yStart = 17 + (84-36-23)/2;
+                yStart = 17 + (84-36-23)/rowsRequired;
             }
             for (int j = 0; j < h.getSlots(); j++) {
                 int row = j / slotsPerRow;
