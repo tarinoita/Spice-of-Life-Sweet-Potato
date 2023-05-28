@@ -8,6 +8,7 @@ import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
+import com.tarinoita.solsweetpotato.SOLSweetPotatoConfig;
 
 import static net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD;
 
@@ -21,13 +22,13 @@ public final class SOLSweetPotatoItems {
 					helper.register(new ResourceLocation(SOLSweetPotato.MOD_ID, "food_book"),
 							new FoodBookItem());
 					helper.register(new ResourceLocation(SOLSweetPotato.MOD_ID, "lunchbag"),
-							new FoodContainerItem(Integer.valueOf(Math.ceil((Double) SOLSweetPotatoConfig.size() * 0.20d)), "lunchbag"));
+							new FoodContainerItem((int) Math.ceil(SOLSweetPotatoConfig.size() * 0.20d), "lunchbag"));
 					helper.register(new ResourceLocation(SOLSweetPotato.MOD_ID, "lunchbox"),
-							new FoodContainerItem(Integer.valueOf(Math.ceil((Double) SOLSweetPotatoConfig.size() * 0.40d)),"lunchbox"));
+							new FoodContainerItem((int) Math.ceil(SOLSweetPotatoConfig.size() * 0.40d),"lunchbox"));
 					helper.register(new ResourceLocation(SOLSweetPotato.MOD_ID, "golden_lunchbox"),
-							new FoodContainerItem(Integer.valueOf(Math.ceil((Double) SOLSweetPotatoConfig.size() * 0.60d)),"golden_lunchbox"));
+							new FoodContainerItem((int) Math.ceil( SOLSweetPotatoConfig.size() * 0.60d),"golden_lunchbox"));
 					helper.register(new ResourceLocation(SOLSweetPotato.MOD_ID, "diamond_lunchbox"),
-							new FoodContainerItem(Integer.valueOf(Math.ceil((Double) SOLSweetPotatoConfig.size() * 0.80d)),"diamond_lunchbox"));
+							new FoodContainerItem((int) Math.ceil(SOLSweetPotatoConfig.size() * 0.80d),"diamond_lunchbox"));
 					helper.register(new ResourceLocation(SOLSweetPotato.MOD_ID, "netherite_lunchbox"),
 							new FoodContainerItem(SOLSweetPotatoConfig.size(),"netherite_lunchbox"));
 				});
