@@ -65,7 +65,22 @@ public class FoodContainer extends AbstractContainerMenu {
             }
         });
 
-        layoutPlayerInventorySlots(8, 84);
+        int slotsPerRow = nslots;
+        if (nslots > MAX_SLOTS_PER_ROW) {
+            slotsPerRow = MAX_SLOTS_PER_ROW;
+        } 
+        int rowsRequired = (int) Math.ceil((double) nslots / (double) slotsPerRow);
+        int playerSlotTopRow;
+        if (rowsRequired >= 10) {
+            playerSlotTopRow = 300;
+        } else if (rowsRequired >= 7) {
+            playerSlotTopRow = 225;
+        } else if (rowsRequired >= 4) {
+            playerSlotTopRow = 150;
+        } else {
+            playerSlotTopRow = 84;
+        }
+        layoutPlayerInventorySlots(8, playerSlotTopRow);
     }
 
     @Override
