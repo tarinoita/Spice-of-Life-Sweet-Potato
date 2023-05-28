@@ -15,6 +15,9 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 public class FoodContainer extends AbstractContainerMenu {
     public static final int PLAYERSIZE = 4 * 9;
+    public static final int GUI_SLOT_SIZE_PX = 18;
+    public static final int GUI_VERTICAL_BUFFER_PX = 17;
+    public static final int MAX_SLOTS_PER_ROW = 9;
 
     public ItemStack containerItem;
     public int nslots;
@@ -44,20 +47,20 @@ public class FoodContainer extends AbstractContainerMenu {
         containerItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
             nslots = h.getSlots();
             int slotsPerRow = h.getSlots();
-            if (h.getSlots() > 9) {
-                slotsPerRow = 9;
-            }
-            int rowsRequired = 1 + h.getSlots() / slotsPerRow;
-            int xStart = (2*8 + 9*18 - slotsPerRow * 18) / rowsRequired;
-            int yStart = 17 + 18;
-            if (h.getSlots() > 9) {
-                yStart = 17 + (84-36-23)/rowsRequired;
+            if (h.getSlots() > MAX_SLOTS_PER_ROW) {
+                slotsPerRow = MAX_SLOTS_PER_ROW;
+            } 
+            int rowsRequired = (int) Math.ceil((double) h.getSlots() / (double) slotsPerRow);
+            int xStart = (2*8 + MAX_SLOTS_PER_ROW*GUI_SLOT_SIZE_PX - slotsPerRow * GUI_SLOT_SIZE_PX) / rowsRequired;
+            int yStart = GUI_VERTICAL_BUFFER_PX + GUI_SLOT_SIZE_PX;
+            if (h.getSlots() > MAX_SLOTS_PER_ROW) {
+                yStart = GUI_VERTICAL_BUFFER_PX + (84-36-23)/rowsRequired;
             }
             for (int j = 0; j < h.getSlots(); j++) {
                 int row = j / slotsPerRow;
                 int col = j % slotsPerRow;
-                int xPos = xStart + col * 18;
-                int yPos = yStart + row * 18;
+                int xPos = xStart + col * GUI_SLOT_SIZE_PX;
+                int yPos = yStart + row * GUI_SLOT_SIZE_PX;
                 this.addSlot(new FoodSlot(h, j, xPos, yPos));
             }
         });

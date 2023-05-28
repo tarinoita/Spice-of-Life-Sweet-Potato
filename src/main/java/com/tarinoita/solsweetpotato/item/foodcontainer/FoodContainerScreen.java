@@ -14,6 +14,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.items.CapabilityItemHandler;
+import static com.tarinoita.solsweetpotato.item.foodcontainer.FoodContainer.GUI_SLOT_SIZE_PX;
+import static com.tarinoita.solsweetpotato.item.foodcontainer.FoodContainer.GUI_VERTICAL_BUFFER_PX;
+import static com.tarinoita.solsweetpotato.item.foodcontainer.FoodContainer.MAX_SLOTS_PER_ROW;
 
 public class FoodContainerScreen extends AbstractContainerScreen<FoodContainer> {
     public FoodContainerScreen(FoodContainer container, Inventory playerInventory, Component title) {
@@ -29,23 +32,33 @@ public class FoodContainerScreen extends AbstractContainerScreen<FoodContainer> 
 
     @Override
     protected void renderBg(PoseStack matrices, float partialTicks, int x, int y) {
-        this.drawBackground(matrices, new ResourceLocation(SOLSweetPotato.MOD_ID, "textures/gui/inventory.png"));
         this.menu.containerItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
             int slotsPerRow = h.getSlots();
-            if (h.getSlots() > 9) {
-                slotsPerRow = 9;
+            if (h.getSlots() > MAX_SLOTS_PER_ROW) {
+                slotsPerRow = MAX_SLOTS_PER_ROW;
+            } 
+            int rowsRequired = (int) Math.ceil((double) h.getSlots() / (double) slotsPerRow);
+            String guiTextureToUse;
+            if (rowsRequired >= 10) {
+                guiTextureToUse = "textures/gui/extra_large_inventory.png";
+            } else if (rowsRequired >= 7) {
+                guiTextureToUse = "textures/gui/large_inventory.png";
+            } else if (rowsRequired >= 4) {
+                guiTextureToUse = "textures/gui/medium_inventory.png";
+            } else {
+                guiTextureToUse = "textures/gui/inventory.png";
             }
-            int rowsRequired = 1 + h.getSlots() / slotsPerRow;
-            int xStart = (2*8 + 9*18 - slotsPerRow * 18) / rowsRequired;
-            int yStart = 17 + 18;
-            if (h.getSlots() > 9) {
-                yStart = 17 + (84-36-23)/rowsRequired;
+            this.drawBackground(matrices, new ResourceLocation(SOLSweetPotato.MOD_ID, guiTextureToUse));
+            int xStart = (2*8 + MAX_SLOTS_PER_ROW*GUI_SLOT_SIZE_PX - slotsPerRow * GUI_SLOT_SIZE_PX) / rowsRequired;
+            int yStart = GUI_VERTICAL_BUFFER_PX + GUI_SLOT_SIZE_PX;
+            if (h.getSlots() > MAX_SLOTS_PER_ROW) {
+                yStart = GUI_VERTICAL_BUFFER_PX + (84-36-23)/rowsRequired;
             }
-            for (int i = 0; i < h.getSlots(); i++) {
-                int row = i / slotsPerRow;
-                int col = i % slotsPerRow;
-                int xPos = xStart - 1 + col * 18;
-                int yPos = yStart - 1 + row * 18;
+            for (int j = 0; j < h.getSlots(); j++) {
+                int row = j / slotsPerRow;
+                int col = j % slotsPerRow;
+                int xPos = xStart + col * GUI_SLOT_SIZE_PX;
+                int yPos = yStart + row * GUI_SLOT_SIZE_PX;
 
                 this.drawSlot(matrices, xPos, yPos);
           }
