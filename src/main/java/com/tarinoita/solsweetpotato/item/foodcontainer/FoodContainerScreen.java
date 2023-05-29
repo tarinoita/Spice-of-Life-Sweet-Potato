@@ -16,22 +16,11 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.items.CapabilityItemHandler;
 import static com.tarinoita.solsweetpotato.item.foodcontainer.FoodContainer.GUI_SLOT_SIZE_PX;
 import static com.tarinoita.solsweetpotato.item.foodcontainer.FoodContainer.GUI_VERTICAL_BUFFER_PX;
-import static com.tarinoita.solsweetpotato.item.foodcontainer.FoodContainer.MAX_SLOTS_PER_ROW;
 
 public class FoodContainerScreen extends AbstractContainerScreen<FoodContainer> {
     public FoodContainerScreen(FoodContainer container, Inventory playerInventory, Component title) {
         super(container, playerInventory, title);
-        int inventoryHeight;
-        if (container.nrows >= 10) {
-            inventoryHeight = 381;
-        } else if (container.nrows >= 7) {
-            inventoryHeight = 301;
-        } else if (container.nrows >= 4) {
-            inventoryHeight = 230;
-        } else {
-            inventoryHeight = 166;
-        }
-        this.imageHeight = inventoryHeight;
+        this.imageHeight = FoodContainerCalculator.getContainerInventoryScreenHeight(FoodContainerCalculator.getRequiredRowCount(container.containerItem.getNSlots()));
         this.inventoryLabelY = this.imageHeight - 94;
     }
 
@@ -44,26 +33,13 @@ public class FoodContainerScreen extends AbstractContainerScreen<FoodContainer> 
 
     @Override
     protected void renderBg(PoseStack matrices, float partialTicks, int x, int y) {
-        this.menu.containerItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-            int slotsPerRow = h.getSlots();
-            if (h.getSlots() > MAX_SLOTS_PER_ROW) {
-                slotsPerRow = MAX_SLOTS_PER_ROW;
-            } 
-            int rowsRequired = (int) Math.ceil((double) h.getSlots() / (double) slotsPerRow);
-            String guiTextureToUse;
-            if (rowsRequired >= 10) {
-                guiTextureToUse = "textures/gui/extra_large_inventory.png";
-            } else if (rowsRequired >= 7) {
-                guiTextureToUse = "textures/gui/large_inventory.png";
-            } else if (rowsRequired >= 4) {
-                guiTextureToUse = "textures/gui/medium_inventory.png";
-            } else {
-                guiTextureToUse = "textures/gui/inventory.png";
-            }
-            this.drawBackground(matrices, new ResourceLocation(SOLSweetPotato.MOD_ID, guiTextureToUse));
-            int xStart = (2*8 + MAX_SLOTS_PER_ROW*GUI_SLOT_SIZE_PX - slotsPerRow * GUI_SLOT_SIZE_PX) / 2;
+        int containerSlots = this.menu.containerItem.getNSlots();
+        this.drawBackground(matrices, new ResourceLocation(SOLSweetPotato.MOD_ID, FoodContainerCalculator.getContainerInventoryGUITexture(FoodContainerCalculator.getRequiredRowCount(containerSlots))));
+        this.menu.capableContainerItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            int slotsPerRow = FoodContainerCalculator.getSlotsPerRow(containerSlots);
+            int xStart = (2*8 + FoodContainerCalculator.MAX_SLOTS_PER_ROW*GUI_SLOT_SIZE_PX - slotsPerRow * GUI_SLOT_SIZE_PX) / 2;
             int yStart = GUI_VERTICAL_BUFFER_PX;
-            for (int i = 0; i < h.getSlots(); i++) {
+            for (int i = 0; i < containerSlots; i++) {
                 int row = i / slotsPerRow;
                 int col = i % slotsPerRow;
                 int xPos = xStart - 1 + col * GUI_SLOT_SIZE_PX;

@@ -1,5 +1,6 @@
 package com.tarinoita.solsweetpotato.item.foodcontainer;
 
+import com.tarinoita.solsweetpotato.SOLSweetPotatoConfig;
 import com.tarinoita.solsweetpotato.integration.Origins;
 import com.tarinoita.solsweetpotato.tracking.FoodList;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,12 +24,12 @@ import javax.annotation.Nullable;
 public class FoodContainerItem extends Item {
     private String displayName;
     private int nslots;
+    private boolean slotCountSet = false;
 
-    public FoodContainerItem(int nslots, String displayName) {
+    public FoodContainerItem(String displayName) {
         super(new Properties().tab(CreativeModeTab.TAB_MISC).stacksTo(1).setNoRepair());
 
         this.displayName = displayName;
-        this.nslots = nslots;
     }
 
     @Override
@@ -82,10 +83,41 @@ public class FoodContainerItem extends Item {
         return true;
     }
 
+    public int getNSlots() {
+        return getNSlots(false);
+    }
+
+    public int getNSlots(boolean reloadFromConfig) {
+        if (!slotCountSet || reloadFromConfig) {
+            // Check if we're using percentages or not
+            // Load the configured size for this container
+            switch (displayName) {
+                case "lunchbag":
+                nslots = (int) Math.ceil(SOLSweetPotatoConfig.size() * 0.20d);
+                break;
+                case "lunchbox":
+                nslots = (int) Math.ceil(SOLSweetPotatoConfig.size() * 0.40d);
+                break;
+                case "golden_lunchbox":
+                nslots = (int) Math.ceil(SOLSweetPotatoConfig.size() * 0.60d);
+                break;
+                case "diamond_lunchbox":
+                nslots = (int) Math.ceil(SOLSweetPotatoConfig.size() * 0.80d);
+                break;
+                case "netherite_lunchbox":
+                nslots = (int) Math.ceil(SOLSweetPotatoConfig.size() * 1.00d);
+                break;
+                default:
+                nslots = 1;
+            }
+        }
+        return nslots;
+    }
+
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        return new FoodContainerCapabilityProvider(stack, nslots);
+        return new FoodContainerCapabilityProvider(stack, getNSlots());
     }
 
     @Nullable

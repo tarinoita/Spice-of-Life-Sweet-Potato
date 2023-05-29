@@ -17,11 +17,9 @@ public class FoodContainer extends AbstractContainerMenu {
     public static final int PLAYERSIZE = 4 * 9;
     public static final int GUI_SLOT_SIZE_PX = 18;
     public static final int GUI_VERTICAL_BUFFER_PX = 16;
-    public static final int MAX_SLOTS_PER_ROW = 9;
 
-    public ItemStack containerItem;
-    public int nslots;
-    public int nrows;
+    public ItemStack capableContainerItem;
+    public FoodContainerItem containerItem;
 
     private Inventory playerInventory;
 
@@ -30,32 +28,30 @@ public class FoodContainer extends AbstractContainerMenu {
 
         // When we hit the hotkey to open a food container, check held items first
         if (player.getMainHandItem().getItem() instanceof FoodContainerItem) {
-            containerItem = player.getMainHandItem();
+            capableContainerItem = player.getMainHandItem();
+            containerItem = (FoodContainerItem) capableContainerItem.getItem();
         }
         else if (player.getOffhandItem().getItem() instanceof FoodContainerItem) {
-            containerItem = player.getOffhandItem();
+            capableContainerItem = player.getOffhandItem();
+            containerItem = (FoodContainerItem) capableContainerItem.getItem();
         }
         else {
             for (ItemStack stack : playerInventory.items) {
                 if (stack.getItem() instanceof FoodContainerItem) {
-                    containerItem = stack;
+                    capableContainerItem = stack;
+                    containerItem = (FoodContainerItem) capableContainerItem.getItem();
                     break;
                 }
             }
         }
 
         this.playerInventory = playerInventory;
-        containerItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-            nslots = h.getSlots();
-            int slotsPerRow = h.getSlots();
-            if (h.getSlots() > MAX_SLOTS_PER_ROW) {
-                slotsPerRow = MAX_SLOTS_PER_ROW;
-            } 
-            int rowsRequired = (int) Math.ceil((double) h.getSlots() / (double) slotsPerRow);
-            nrows = rowsRequired;
-            int xStart = (2*8 + MAX_SLOTS_PER_ROW*GUI_SLOT_SIZE_PX - slotsPerRow * GUI_SLOT_SIZE_PX) / 2;
+        capableContainerItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            int containerSlots = containerItem.getNSlots();
+            int slotsPerRow = FoodContainerCalculator.getSlotsPerRow(containerSlots);
+            int xStart = (2*8 + FoodContainerCalculator.MAX_SLOTS_PER_ROW*GUI_SLOT_SIZE_PX - slotsPerRow * GUI_SLOT_SIZE_PX) / 2;
             int yStart = GUI_VERTICAL_BUFFER_PX;
-            for (int j = 0; j < h.getSlots(); j++) {
+            for (int j = 0; j < containerSlots; j++) {
                 int row = j / slotsPerRow;
                 int col = j % slotsPerRow;
                 int xPos = xStart + col * GUI_SLOT_SIZE_PX;
@@ -64,17 +60,7 @@ public class FoodContainer extends AbstractContainerMenu {
             }
         });
 
-        int playerSlotTopRow;
-        if (nrows >= 10) {
-            playerSlotTopRow = 299;
-        } else if (nrows >= 7) {
-            playerSlotTopRow = 219;
-        } else if (nrows >= 4) {
-            playerSlotTopRow = 148;
-        } else {
-            playerSlotTopRow = 84;
-        }
-        layoutPlayerInventorySlots(8, playerSlotTopRow);
+        layoutPlayerInventorySlots(8, FoodContainerCalculator.getPlayerInventoryUpperPosition(FoodContainerCalculator.getRequiredRowCount(containerItem.getNSlots())));
     }
 
     @Override
@@ -103,14 +89,14 @@ public class FoodContainer extends AbstractContainerMenu {
         }
         
         final ItemStack unchangedCopy = clickedStack.copy();
-        if (slotId < nslots) {
+        if (slotId < containerItem.getNSlots()) {
             // Item is in the FoodContainer, move it to inventory
-            if (!moveItemStackTo(clickedStack, nslots, nslots + PLAYERSIZE, false)) {
+            if (!moveItemStackTo(clickedStack, containerItem.getNSlots(), containerItem.getNSlots() + PLAYERSIZE, false)) {
                 return ItemStack.EMPTY;
             }
         } else {
             // Item is in the inventory, move it to the FoodContainer
-            if (!moveItemStackTo(clickedStack, 0, nslots, false)) {
+            if (!moveItemStackTo(clickedStack, 0, containerItem.getNSlots(), false)) {
                 return ItemStack.EMPTY;
             }
         }
