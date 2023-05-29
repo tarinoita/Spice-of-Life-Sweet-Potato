@@ -18,6 +18,8 @@ import static com.tarinoita.solsweetpotato.item.foodcontainer.FoodContainer.GUI_
 import static com.tarinoita.solsweetpotato.item.foodcontainer.FoodContainer.GUI_VERTICAL_BUFFER_PX;
 
 public class FoodContainerScreen extends AbstractContainerScreen<FoodContainer> {
+
+
     public FoodContainerScreen(FoodContainer container, Inventory playerInventory, Component title) {
         super(container, playerInventory, title);
         this.imageHeight = FoodContainerCalculator.getContainerInventoryScreenHeight(FoodContainerCalculator.getRequiredRowCount(container.containerItem.getNSlots()));
@@ -54,9 +56,11 @@ public class FoodContainerScreen extends AbstractContainerScreen<FoodContainer> 
         this.minecraft.getTextureManager().bindForSetup(gui);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderTexture(0, gui);
-        int relX = (this.width - this.getXSize()) / 2;
-        int relY = (this.height - this.getYSize()) / 2;
-        this.blit(ms, relX, relY, 0, 0, this.getXSize(), this.getYSize());
+        int textureFileHeight = 256;
+        if (this.getYSize() > textureFileHeight) {
+            textureFileHeight = 512;
+        }
+        blit(ms, this.getGuiLeft(), this.getGuiTop(), 0, 0, 0, this.getXSize(), this.getYSize(), 256, textureFileHeight);
     }
 
     protected void drawSlot(PoseStack ms, int x, int y, ResourceLocation texture, int size) {
