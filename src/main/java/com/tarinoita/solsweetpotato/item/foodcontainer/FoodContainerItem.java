@@ -94,26 +94,26 @@ public class FoodContainerItem extends Item {
             // In retrospect, this would've been easier if the config values were set up as a map.
             switch (displayName) {
                 case "lunchbag":
-                containerSize = SOLSweetPotatoConfig.getLunchbagSize();
+                containerSize = SOLSweetPotatoConfig.lunchbagSize();
                 break;
                 case "lunchbox":
-                containerSize = SOLSweetPotatoConfig.getLunchoxSize();
+                containerSize = SOLSweetPotatoConfig.lunchboxSize();
                 break;
                 case "golden_lunchbox":
-                containerSize = SOLSweetPotatoConfig.getGoldenLunchoxSize();
+                containerSize = SOLSweetPotatoConfig.goldenLunchboxSize();
                 break;
                 case "diamond_lunchbox":
-                containerSize = SOLSweetPotatoConfig.getDiamondLunchboxSize();
+                containerSize = SOLSweetPotatoConfig.diamondLunchboxSize();
                 break;
                 case "netherite_lunchbox":
-                containerSize = SOLSweetPotatoConfig.getNetheriteLunchboxSize();
+                containerSize = SOLSweetPotatoConfig.netheriteLunchboxSize();
                 break;
                 default:
                 containerSize = 1;
             }
             
             // Check if we're using percentages or not
-            boolean usePerecentages = SOLSweetPotatoConfig.usePercentages();
+            boolean usePercentages = SOLSweetPotatoConfig.usePercentages();
             if (usePercentages) {
                 // queueSize * (container size in percentage) / 100
                 // ex: 32 * (10 / 100) = 32 * .1 = 3.2 rounded up to 4
@@ -122,7 +122,7 @@ public class FoodContainerItem extends Item {
                 nslots = containerSize;
             }
             // Limit range between 1 and 135
-            nslots = Math.min(135, nslots);
+            nslots = Math.min(FoodContainerCalculator.MAX_SLOTS_ALLOWED, nslots);
             nslots = Math.max(1, nslots);
         }
         return nslots;

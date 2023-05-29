@@ -6,13 +6,15 @@ public final class FoodContainerCalculator {
         // Utility class
     }
 
-    public static final int EXTRA_LARGE_ROW_THRESHOLD = 10;
+    public static final int MAX_SLOTS_PER_ROW = 9;
+    // Any higher than this and the container will overflow into the player inventory
+    public static final int MAX_SLOTS_ALLOWED = MAX_SLOTS_PER_ROW * 15;
+    public static final int EXTRA_LARGE_ROW_THRESHOLD = 11;
     public static final int LARGE_ROW_THRESHOLD = 7;
     public static final int MEDIUM_ROW_THRESHOLD = 4;
 
     public static final int PLAYER_INVENTORY_HEIGHT_PX = 82;
     
-    public static final int MAX_SLOTS_PER_ROW = 9;
 
     public static int getContainerInventoryScreenHeight(int nrows) {
         if (nrows >= EXTRA_LARGE_ROW_THRESHOLD) {
