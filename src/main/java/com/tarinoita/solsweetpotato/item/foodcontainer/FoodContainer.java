@@ -16,7 +16,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 public class FoodContainer extends AbstractContainerMenu {
     public static final int PLAYERSIZE = 4 * 9;
     public static final int GUI_SLOT_SIZE_PX = 18;
-    public static final int GUI_VERTICAL_BUFFER_PX = 12;
+    public static final int GUI_VERTICAL_BUFFER_PX = 16;
     public static final int MAX_SLOTS_PER_ROW = 9;
 
     public ItemStack containerItem;
@@ -54,7 +54,7 @@ public class FoodContainer extends AbstractContainerMenu {
             int rowsRequired = (int) Math.ceil((double) h.getSlots() / (double) slotsPerRow);
             nrows = rowsRequired;
             int xStart = (2*8 + MAX_SLOTS_PER_ROW*GUI_SLOT_SIZE_PX - slotsPerRow * GUI_SLOT_SIZE_PX) / 2;
-            int yStart = GUI_VERTICAL_BUFFER_PX + GUI_SLOT_SIZE_PX/rowsRequired;
+            int yStart = GUI_VERTICAL_BUFFER_PX;
             for (int j = 0; j < h.getSlots(); j++) {
                 int row = j / slotsPerRow;
                 int col = j % slotsPerRow;

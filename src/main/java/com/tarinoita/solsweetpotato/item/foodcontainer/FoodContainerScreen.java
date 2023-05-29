@@ -62,7 +62,7 @@ public class FoodContainerScreen extends AbstractContainerScreen<FoodContainer> 
             }
             this.drawBackground(matrices, new ResourceLocation(SOLSweetPotato.MOD_ID, guiTextureToUse));
             int xStart = (2*8 + MAX_SLOTS_PER_ROW*GUI_SLOT_SIZE_PX - slotsPerRow * GUI_SLOT_SIZE_PX) / 2;
-            int yStart = GUI_VERTICAL_BUFFER_PX + GUI_SLOT_SIZE_PX/rowsRequired;
+            int yStart = GUI_VERTICAL_BUFFER_PX;
             for (int i = 0; i < h.getSlots(); i++) {
                 int row = i / slotsPerRow;
                 int col = i % slotsPerRow;
