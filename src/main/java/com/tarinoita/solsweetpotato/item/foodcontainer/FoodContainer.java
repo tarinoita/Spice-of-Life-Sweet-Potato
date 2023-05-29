@@ -21,6 +21,7 @@ public class FoodContainer extends AbstractContainerMenu {
 
     public ItemStack containerItem;
     public int nslots;
+    public int nrows;
 
     private Inventory playerInventory;
 
@@ -51,11 +52,9 @@ public class FoodContainer extends AbstractContainerMenu {
                 slotsPerRow = MAX_SLOTS_PER_ROW;
             } 
             int rowsRequired = (int) Math.ceil((double) h.getSlots() / (double) slotsPerRow);
-            int xStart = (2*8 + MAX_SLOTS_PER_ROW*GUI_SLOT_SIZE_PX - slotsPerRow * GUI_SLOT_SIZE_PX) / rowsRequired;
-            int yStart = GUI_VERTICAL_BUFFER_PX + GUI_SLOT_SIZE_PX;
-            if (h.getSlots() > MAX_SLOTS_PER_ROW) {
-                yStart = GUI_VERTICAL_BUFFER_PX + (84-36-23)/rowsRequired;
-            }
+            nrows = rowsRequired;
+            int xStart = (2*8 + MAX_SLOTS_PER_ROW*GUI_SLOT_SIZE_PX - slotsPerRow * GUI_SLOT_SIZE_PX) / 2;
+            int yStart = GUI_VERTICAL_BUFFER_PX + GUI_SLOT_SIZE_PX/rowsRequired;
             for (int j = 0; j < h.getSlots(); j++) {
                 int row = j / slotsPerRow;
                 int col = j % slotsPerRow;
@@ -65,17 +64,12 @@ public class FoodContainer extends AbstractContainerMenu {
             }
         });
 
-        int slotsPerRow = nslots;
-        if (nslots > MAX_SLOTS_PER_ROW) {
-            slotsPerRow = MAX_SLOTS_PER_ROW;
-        } 
-        int rowsRequired = (int) Math.ceil((double) nslots / (double) slotsPerRow);
         int playerSlotTopRow;
-        if (rowsRequired >= 10) {
+        if (nrows >= 10) {
             playerSlotTopRow = 299;
-        } else if (rowsRequired >= 7) {
+        } else if (nrows >= 7) {
             playerSlotTopRow = 219;
-        } else if (rowsRequired >= 4) {
+        } else if (nrows >= 4) {
             playerSlotTopRow = 148;
         } else {
             playerSlotTopRow = 84;

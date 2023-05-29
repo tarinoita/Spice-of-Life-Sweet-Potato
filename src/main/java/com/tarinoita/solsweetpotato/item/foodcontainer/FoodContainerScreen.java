@@ -21,6 +21,18 @@ import static com.tarinoita.solsweetpotato.item.foodcontainer.FoodContainer.MAX_
 public class FoodContainerScreen extends AbstractContainerScreen<FoodContainer> {
     public FoodContainerScreen(FoodContainer container, Inventory playerInventory, Component title) {
         super(container, playerInventory, title);
+        int inventoryHeight;
+        if (container.nrows >= 10) {
+            inventoryHeight = 381;
+        } else if (container.nrows >= 7) {
+            inventoryHeight = 301;
+        } else if (container.nrows >= 4) {
+            inventoryHeight = 230;
+        } else {
+            inventoryHeight = 166;
+        }
+        this.imageHeight = inventoryHeight;
+        this.inventoryLabelY = this.imageHeight - 94;
     }
 
     @Override
@@ -28,14 +40,6 @@ public class FoodContainerScreen extends AbstractContainerScreen<FoodContainer> 
         this.renderBackground(ms);
         super.render(ms, mouseX, mouseY, partialTicks);
         this.renderTooltip(ms, mouseX, mouseY);
-    }
-
-    @Override
-    protected void init() {
-        // Largest lunchbox png dimensions
-        super.init(minecraft, 176, 382);
-        this.leftPos = (this.width - this.imageWidth) / 2;
-        this.topPos = (this.height - this.imageHeight) / 2;
     }
 
     @Override
@@ -57,11 +61,8 @@ public class FoodContainerScreen extends AbstractContainerScreen<FoodContainer> 
                 guiTextureToUse = "textures/gui/inventory.png";
             }
             this.drawBackground(matrices, new ResourceLocation(SOLSweetPotato.MOD_ID, guiTextureToUse));
-            int xStart = (2*8 + MAX_SLOTS_PER_ROW*GUI_SLOT_SIZE_PX - slotsPerRow * GUI_SLOT_SIZE_PX) / rowsRequired;
-            int yStart = GUI_VERTICAL_BUFFER_PX + GUI_SLOT_SIZE_PX;
-            if (h.getSlots() > MAX_SLOTS_PER_ROW) {
-                yStart = GUI_VERTICAL_BUFFER_PX + (84-36-23)/rowsRequired;
-            }
+            int xStart = (2*8 + MAX_SLOTS_PER_ROW*GUI_SLOT_SIZE_PX - slotsPerRow * GUI_SLOT_SIZE_PX) / 2;
+            int yStart = GUI_VERTICAL_BUFFER_PX + GUI_SLOT_SIZE_PX/rowsRequired;
             for (int i = 0; i < h.getSlots(); i++) {
                 int row = i / slotsPerRow;
                 int col = i % slotsPerRow;
