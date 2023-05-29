@@ -60,6 +60,45 @@
 	#
 	resetOnDeath = false
 
+[Items]
+	#
+	# Whether food containers should be based on a percentage of the 'queueSize'.
+	# If 'usePercentages' is false, the 'size' of each container will be the number of stacks of food it can hold.
+	# If 'usePercentages' is true, the number of stacks of food each container can hold will be based on the 'queueSize'.
+	# Example: If 'queueSize' is 32 and the size of the container is '10', the lunchbag will hold 4 (32/10 rounded up) stacks of food.
+	# Regardless of this value, the range for any container's capacity is between 1 and 135 stacks.
+	usePercentages = false
+	#
+	# Sets the number of slots the lunchbag will have, based on the 'usePercentages' option.
+	# Changing this value to be lower than the current value will cause any items in lost slots to be lost.
+	# Changes to this value will not take place until the world is reloaded.
+	#Range: 1 ~ 135
+	lunchbagSize = 5
+	#
+	# Sets the number of slots the lunchbox will have, based on the 'usePercentages' option.
+	# Changing this value to be lower than the current value will cause any items in lost slots to be lost.
+	# Changes to this value will not take place until the world is reloaded.
+	#Range: 1 ~ 135
+	lunchboxSize = 9
+	#
+	# Sets the number of slots the golden lunchbox will have, based on the 'usePercentages' option.
+	# Changing this value to be lower than the current value will cause any items in lost slots to be lost.
+	# Changes to this value will not take place until the world is reloaded.
+	#Range: 1 ~ 135
+	goldenLunchboxSize = 14
+	#
+	# Sets the number of slots the diamond lunchbox will have, based on the 'usePercentages' option.
+	# Changing this value to be lower than the current value will cause any items in lost slots to be lost.
+	# Changes to this value will not take place until the world is reloaded.
+	#Range: 1 ~ 135
+	diamondLunchboxSize = 20
+	#
+	# Sets the number of slots the netherite lunchbox will have, based on the 'usePercentages' option.
+	# Changing this value to be lower than the current value will cause any items in lost slots to be lost.
+	# Changes to this value will not take place until the world is reloaded.
+	#Range: 1 ~ 135
+	netheriteLunchbox = 27
+
 [Advanced]
 	#
 	# How many meals in the past should the diversity time penalty start to apply.

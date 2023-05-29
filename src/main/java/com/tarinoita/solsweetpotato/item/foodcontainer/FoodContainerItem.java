@@ -89,27 +89,41 @@ public class FoodContainerItem extends Item {
 
     public int getNSlots(boolean reloadFromConfig) {
         if (!slotCountSet || reloadFromConfig) {
-            // Check if we're using percentages or not
             // Load the configured size for this container
+            Integer containerSize;
+            // In retrospect, this would've been easier if the config values were set up as a map.
             switch (displayName) {
                 case "lunchbag":
-                nslots = (int) Math.ceil(SOLSweetPotatoConfig.size() * 0.20d);
+                containerSize = SOLSweetPotatoConfig.getLunchbagSize();
                 break;
                 case "lunchbox":
-                nslots = (int) Math.ceil(SOLSweetPotatoConfig.size() * 0.40d);
+                containerSize = SOLSweetPotatoConfig.getLunchoxSize();
                 break;
                 case "golden_lunchbox":
-                nslots = (int) Math.ceil(SOLSweetPotatoConfig.size() * 0.60d);
+                containerSize = SOLSweetPotatoConfig.getGoldenLunchoxSize();
                 break;
                 case "diamond_lunchbox":
-                nslots = (int) Math.ceil(SOLSweetPotatoConfig.size() * 0.80d);
+                containerSize = SOLSweetPotatoConfig.getDiamondLunchboxSize();
                 break;
                 case "netherite_lunchbox":
-                nslots = (int) Math.ceil(SOLSweetPotatoConfig.size() * 1.00d);
+                containerSize = SOLSweetPotatoConfig.getNetheriteLunchboxSize();
                 break;
                 default:
-                nslots = 1;
+                containerSize = 1;
             }
+            
+            // Check if we're using percentages or not
+            boolean usePerecentages = SOLSweetPotatoConfig.usePercentages();
+            if (usePercentages) {
+                // queueSize * (container size in percentage) / 100
+                // ex: 32 * (10 / 100) = 32 * .1 = 3.2 rounded up to 4
+                nslots = (int) Math.ceil(SOLSweetPotatoConfig.size() * (double)(containerSize/100d));
+            } else {
+                nslots = containerSize;
+            }
+            // Limit range between 1 and 135
+            nslots = Math.min(135, nslots);
+            nslots = Math.max(1, nslots);
         }
         return nslots;
     }

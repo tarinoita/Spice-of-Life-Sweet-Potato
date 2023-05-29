@@ -113,6 +113,30 @@ public final class SOLSweetPotatoConfig {
 		return SERVER.minFoodsToActivate.get();
 	}
 	
+	public static boolean usePercentages() {
+		return SERVER.usePercentages.get();
+	}
+
+	public static Integer lunchbagSize() {
+		return SERVER.lunchbagSize.get();
+	}
+	
+	public static Integer lunchboxSize() {
+		return SERVER.lunchboxSize.get();
+	}
+	
+	public static Integer goldenLunchboxSize() {
+		return SERVER.goldenLunchboxSize.get();
+	}
+	
+	public static Integer diamondLunchboxSize() {
+		return SERVER.diamondLunchboxSize.get();
+	}
+	
+	public static Integer netheriteLunchboxSize() {
+		return SERVER.netheriteLunchboxSize.get();
+	}
+	
 	public static class Server {
 		public final ConfigValue<List<? extends String>> blacklist;
 		public final ConfigValue<List<? extends String>> whitelist;
@@ -134,6 +158,13 @@ public final class SOLSweetPotatoConfig {
 		public final BooleanValue shouldForbiddenCount;
 
 		public final ConfigValue<List<? extends String>> complexityUnparsed;
+
+		public final BooleanValue usePercentages;
+		public final IntValue lunchbagSize;
+		public final IntValue lunchboxSize;
+		public final IntValue goldenLunchboxSize;
+		public final IntValue diamondLunchboxSize;
+		public final IntValue netheriteLunchboxSize;
 
 		Server(Builder builder) {
 			builder.push("Benefits");
@@ -228,6 +259,54 @@ public final class SOLSweetPotatoConfig {
 							+" make sure you change endDecay (below) to match queueSize, or else nothing will change!!!\n"
 							+"\n")
 					.defineInRange("queueSize", 32, 1, 1000);
+
+			builder.pop();
+			builder.push("Items");
+			
+			usePercentages = builder
+					.translation(localizationPath("use_percentages"))
+					.comment("\n\n Whether food containers should be based on a percentage of the 'queueSize'."
+							+"\n If 'usePercentages' is false, the 'size' of each container will be the number of stacks of food it can hold."
+							+"\n If 'usePercentages' is true, the number of stacks of food each container can hold will be based on the 'queueSize'."
+							+"\n Example: If 'queueSize' is 32 and the size of the container is '10', the lunchbag will hold 4 (32/10 rounded up) stacks of food."
+							+"\n Regardless of this value, the range for any container's capacity is between 1 and 135 stacks.")
+					.define("usePercentages", false);
+
+			lunchbagSize = builder
+					.translation(localizationPath("lunchbag_size"))
+					.comment("\n\n Sets the number of slots the lunchbag will have, based on the 'usePercentages' option."
+							+"\n Changing this value to be lower than the current value will cause any items in lost slots to be lost."
+							+"\n Changes to this value will not take place until the world is reloaded.")
+					.defineInRange("lunchbagSize", 5, 1, 135);
+
+			lunchboxSize = builder
+					.translation(localizationPath("lunchbox_size"))
+					.comment("\n\n Sets the number of slots the lunchbox will have, based on the 'usePercentages' option."
+							+"\n Changing this value to be lower than the current value will cause any items in lost slots to be lost."
+							+"\n Changes to this value will not take place until the world is reloaded.")
+					.defineInRange("lunchboxSize", 9, 1, 135);
+
+			goldenLunchboxSize = builder
+					.translation(localizationPath("golden_lunchbox_size"))
+					.comment("\n\n Sets the number of slots the golden lunchbox will have, based on the 'usePercentages' option."
+							+"\n Changing this value to be lower than the current value will cause any items in lost slots to be lost."
+							+"\n Changes to this value will not take place until the world is reloaded.")
+					.defineInRange("goldenLunchboxSize", 14, 1, 135);
+
+			diamondLunchboxSize = builder
+					.translation(localizationPath("diamond_lunchbox_size"))
+					.comment("\n\n Sets the number of slots the diamond lunchbox will have, based on the 'usePercentages' option."
+							+"\n Changing this value to be lower than the current value will cause any items in lost slots to be lost."
+							+"\n Changes to this value will not take place until the world is reloaded.")
+					.defineInRange("diamondLunchboxSize", 20, 1, 135);
+
+					
+			netheriteLunchboxSize = builder
+					.translation(localizationPath("netherite_lunchbox_size"))
+					.comment("\n\n Sets the number of slots the netherite lunchbox will have, based on the 'usePercentages' option."
+							+"\n Changing this value to be lower than the current value will cause any items in lost slots to be lost."
+							+"\n Changes to this value will not take place until the world is reloaded.")
+					.defineInRange("netheriteLunchboxSize", 27, 1, 135);
 
 			builder.pop();
 			builder.push("Advanced");
