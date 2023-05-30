@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " A ",
+    "ABA",
+    "AAA"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:diamond"
+    },
+    "B": {
+      "item": "solsweetpotato:golden_lunchbox"
+    }
+  },
+  "result": {
+    "item": "solsweetpotato:diamond_lunchbox"
+  }
+}

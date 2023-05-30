@@ -11,12 +11,16 @@
 	"command.solsweetpotato.solsweetpotato.origin.inapplicable": "Origins mod not installed. Cleared origin data anyway.",
 
 	"item.solsweetpotato.food_book": "Food Book",
+	"item.solsweetpotato.lunchbag": "Lunchbag",
+	"item.solsweetpotato.container.lunchbag": "Lunchbag",
 	"item.solsweetpotato.lunchbox": "Lunchbox",
 	"item.solsweetpotato.container.lunchbox": "Lunchbox",
     "item.solsweetpotato.golden_lunchbox": "Golden Lunchbox",
     "item.solsweetpotato.container.golden_lunchbox": "Golden Lunchbox",
-	"item.solsweetpotato.lunchbag": "Lunchbag",
-	"item.solsweetpotato.container.lunchbag": "Lunchbag",
+    "item.solsweetpotato.diamond_lunchbox": "Diamond Lunchbox",
+    "item.solsweetpotato.container.diamond_lunchbox": "Diamond Lunchbox",
+    "item.solsweetpotato.netherite_lunchbox": "Netherite Lunchbox",
+    "item.solsweetpotato.container.netherite_lunchbox": "Netherite Lunchbox",
 
 	"key.solsweetpotato.open_food_book": "Open Food Book",
 	"key.solsweetpotato.category": "Spice of Life: Potato Edition",

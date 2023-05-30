@@ -14,10 +14,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.items.CapabilityItemHandler;
+import static com.tarinoita.solsweetpotato.item.foodcontainer.FoodContainer.GUI_SLOT_SIZE_PX;
+import static com.tarinoita.solsweetpotato.item.foodcontainer.FoodContainer.GUI_VERTICAL_BUFFER_PX;
 
 public class FoodContainerScreen extends AbstractContainerScreen<FoodContainer> {
+
+
     public FoodContainerScreen(FoodContainer container, Inventory playerInventory, Component title) {
         super(container, playerInventory, title);
+        this.imageHeight = FoodContainerCalculator.getContainerInventoryScreenHeight(FoodContainerCalculator.getRequiredRowCount(container.containerItem.getNSlots()));
+        this.inventoryLabelY = this.imageHeight - 94;
     }
 
     @Override
@@ -29,22 +35,17 @@ public class FoodContainerScreen extends AbstractContainerScreen<FoodContainer> 
 
     @Override
     protected void renderBg(PoseStack matrices, float partialTicks, int x, int y) {
-        this.drawBackground(matrices, new ResourceLocation(SOLSweetPotato.MOD_ID, "textures/gui/inventory.png"));
-        this.menu.containerItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-            int slotsPerRow = h.getSlots();
-            if (h.getSlots() > 9) {
-                slotsPerRow = h.getSlots() / 2;
-            }
-            int xStart = (2*8 + 9*18 - slotsPerRow * 18) / 2;
-            int yStart = 17 + 18;
-            if (h.getSlots() > 9) {
-                yStart = 17 + (84-36-23)/2;
-            }
-            for (int i = 0; i < h.getSlots(); i++) {
+        int containerSlots = this.menu.containerItem.getNSlots();
+        this.drawBackground(matrices, new ResourceLocation(SOLSweetPotato.MOD_ID, FoodContainerCalculator.getContainerInventoryGUITexture(FoodContainerCalculator.getRequiredRowCount(containerSlots))));
+        this.menu.capableContainerItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            int slotsPerRow = FoodContainerCalculator.getSlotsPerRow(containerSlots);
+            int xStart = (2*8 + FoodContainerCalculator.MAX_SLOTS_PER_ROW*GUI_SLOT_SIZE_PX - slotsPerRow * GUI_SLOT_SIZE_PX) / 2;
+            int yStart = GUI_VERTICAL_BUFFER_PX;
+            for (int i = 0; i < containerSlots; i++) {
                 int row = i / slotsPerRow;
                 int col = i % slotsPerRow;
-                int xPos = xStart - 1 + col * 18;
-                int yPos = yStart - 1 + row * 18;
+                int xPos = xStart - 1 + col * GUI_SLOT_SIZE_PX;
+                int yPos = yStart - 1 + row * GUI_SLOT_SIZE_PX;
 
                 this.drawSlot(matrices, xPos, yPos);
           }
@@ -55,9 +56,11 @@ public class FoodContainerScreen extends AbstractContainerScreen<FoodContainer> 
         this.minecraft.getTextureManager().bindForSetup(gui);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderTexture(0, gui);
-        int relX = (this.width - this.getXSize()) / 2;
-        int relY = (this.height - this.getYSize()) / 2;
-        this.blit(ms, relX, relY, 0, 0, this.getXSize(), this.getYSize());
+        int textureFileHeight = 256;
+        if (this.getYSize() > textureFileHeight) {
+            textureFileHeight = 512;
+        }
+        blit(ms, this.getGuiLeft(), this.getGuiTop(), 0, 0, 0, this.getXSize(), this.getYSize(), 256, textureFileHeight);
     }
 
     protected void drawSlot(PoseStack ms, int x, int y, ResourceLocation texture, int size) {

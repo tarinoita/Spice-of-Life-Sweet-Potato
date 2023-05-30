@@ -1,5 +1,6 @@
 package com.tarinoita.solsweetpotato.item.foodcontainer;
 
+import com.tarinoita.solsweetpotato.SOLSweetPotatoConfig;
 import com.tarinoita.solsweetpotato.integration.Origins;
 import com.tarinoita.solsweetpotato.tracking.FoodList;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,12 +24,12 @@ import javax.annotation.Nullable;
 public class FoodContainerItem extends Item {
     private String displayName;
     private int nslots;
+    private boolean slotCountSet = false;
 
-    public FoodContainerItem(int nslots, String displayName) {
+    public FoodContainerItem(String displayName) {
         super(new Properties().tab(CreativeModeTab.TAB_MISC).stacksTo(1).setNoRepair());
 
         this.displayName = displayName;
-        this.nslots = nslots;
     }
 
     @Override
@@ -82,10 +83,55 @@ public class FoodContainerItem extends Item {
         return true;
     }
 
+    public int getNSlots() {
+        return getNSlots(false);
+    }
+
+    public int getNSlots(boolean reloadFromConfig) {
+        if (!slotCountSet || reloadFromConfig) {
+            // Load the configured size for this container
+            Integer containerSize;
+            // In retrospect, this would've been easier if the config values were set up as a map.
+            switch (displayName) {
+                case "lunchbag":
+                containerSize = SOLSweetPotatoConfig.lunchbagSize();
+                break;
+                case "lunchbox":
+                containerSize = SOLSweetPotatoConfig.lunchboxSize();
+                break;
+                case "golden_lunchbox":
+                containerSize = SOLSweetPotatoConfig.goldenLunchboxSize();
+                break;
+                case "diamond_lunchbox":
+                containerSize = SOLSweetPotatoConfig.diamondLunchboxSize();
+                break;
+                case "netherite_lunchbox":
+                containerSize = SOLSweetPotatoConfig.netheriteLunchboxSize();
+                break;
+                default:
+                containerSize = 1;
+            }
+            
+            // Check if we're using percentages or not
+            boolean usePercentages = SOLSweetPotatoConfig.usePercentages();
+            if (usePercentages) {
+                // queueSize * (container size in percentage) / 100
+                // ex: 32 * (10 / 100) = 32 * .1 = 3.2 rounded up to 4
+                nslots = (int) Math.ceil(SOLSweetPotatoConfig.size() * (double)(containerSize/100d));
+            } else {
+                nslots = containerSize;
+            }
+            // Limit range between 1 and 135
+            nslots = Math.min(FoodContainerCalculator.MAX_SLOTS_ALLOWED, nslots);
+            nslots = Math.max(1, nslots);
+        }
+        return nslots;
+    }
+
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        return new FoodContainerCapabilityProvider(stack, nslots);
+        return new FoodContainerCapabilityProvider(stack, getNSlots());
     }
 
     @Nullable

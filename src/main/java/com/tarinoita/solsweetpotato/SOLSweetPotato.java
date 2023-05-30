@@ -1,9 +1,9 @@
 package com.tarinoita.solsweetpotato;
 
 import com.tarinoita.solsweetpotato.client.ContainerScreenRegistry;
-import com.tarinoita.solsweetpotato.client.SOLClientRegistry;
 import com.tarinoita.solsweetpotato.communication.ConfigMessage;
 import com.tarinoita.solsweetpotato.communication.FoodListMessage;
+import com.tarinoita.solsweetpotato.item.SOLSweetPotatoItems;
 import com.tarinoita.solsweetpotato.item.foodcontainer.FoodContainerScreen;
 
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -62,5 +62,6 @@ public final class SOLSweetPotato {
 	public SOLSweetPotato() {
 		SOLSweetPotatoConfig.setUp();
 		ContainerScreenRegistry.MENU_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
+		SOLSweetPotatoItems.registerSweetPotatoItems();
 	}
 }
